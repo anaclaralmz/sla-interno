@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Account Management</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h2 class="mt-5">Payment Form</h2>
+
+    <div class="form-group">
+        <label for="account">Account</label>
+        <input type="text" id="account" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label for="amount">Amount</label>
+        <input type="text" id="amount" class="form-control">
+    </div>
+
+    <button class="btn btn-primary" onclick="submitPayment()">Submit Payment</button>
+
+    <h2 class="mt-5">Transfer Form</h2>
+
+    <div class="form-group">
+        <label for="fromAccount">From Account</label>
+        <input type="text" id="fromAccount" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label for="toAccount">To Account</label>
+        <input type="text" id="toAccount" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label for="transferAmount">Amount</label>
+        <input type="text" id="transferAmount" class="form-control">
+    </div>
+
+    <button class="btn btn-primary" onclick="submitTransfer()">Submit Transfer</button>
+
+    <h2 class="mt-5">Check Balance</h2>
+    <p id="balanceText">Your balance is: </p>
+    <button class="btn btn-primary" onclick="checkBalance()">Check Balance</button>
+    
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function submitPayment() {
+      let account = $("#account").val();
+      let amount = $("#amount").val();
+    
+      $.ajax({
+        url: "http://localhost:5282/api/Payment",
+        type: 'POST',
+        data: JSON.stringify({ account: account, ammount: amount}),
+        contentType: 'application/json; charset=utf-8',
+        success: function(result){
+            alert("Payment submitted successfully!");
+        }
+      });
+    }
+    
+    function submitTransfer() {
+      let fromAccount = $("#fromAccount").val();
+      let toAccount = $("#toAccount").val();
+      let amount = $("#transferAmount").val();
+    
+      $.ajax({
+        url: "http://localhost:5282/api/Transfer",
+        type: 'POST',
+        data: JSON.stringify({ account: fromAccount, destinationAccount: toAccount, ammount: amount}),
+        contentType: 'application/json; charset=utf-8',
+        success: function(result){
+            alert("Transfer submitted successfully!");
+        }
+      });
+    }
+    
+    function checkBalance() {
+      let account = $("#account").val();
+    
+      $.ajax({
+        url: "http://localhost:5282/api/Payment?account=" + account,
+        type: 'GET',
+        success: function(accountDetails){
+            $("#balanceText").text("Your balance is: " + accountDetails.balance);
+        }
+      });
+    }
+    
+    </script>
+</body>
+</html>
+<!-- <!DOCTYPE html>
+<html>
+<body>
+
+<h2>Payment Form</h2>
+
+<form id="paymentForm">
+  Account:<br>
+  <input type="text" id="account">
+  <br>
+  Amount:<br>
+  <input type="text" id="amount" >
+  <br><br>
+  <input type="button" value="Submit Payment" onclick="submitPayment()">
+</form> 
+
+<h2>Transfer Form</h2>
+
+<form id="transferForm">
+  From Account:<br>
+  <input type="text" id="fromAccount">
+  <br>
+  To Account:<br>
+  <input type="text" id="toAccount" >
+  <br>
+  Amount:<br>
+  <input type="text" id="transferAmount" >
+  <br><br>
+  <input type="button" value="Submit Transfer" onclick="submitTransfer()">
+</form> 
+
+<h2>Check Balance</h2>
+<p id="balanceText">Your balance is: </p>
+
+<input type="button" value="Check Balance" onclick="checkBalance()">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+function submitPayment() {
+  let account = $("#account").val();
+  let amount = $("#amount").val();
+
+  $.ajax({
+    url: "http://localhost:5282/api/Payment",
+    type: 'POST',
+    data: JSON.stringify({ account: account, ammount: amount}),
+    contentType: 'application/json; charset=utf-8',
+    success: function(result){
+        alert("Payment submitted successfully!");
+    }
+  });
+}
+
+function submitTransfer() {
+  let fromAccount = $("#fromAccount").val();
+  let toAccount = $("#toAccount").val();
+  let amount = $("#transferAmount").val();
+
+  $.ajax({
+    url: "http://localhost:5282/api/Transfer",
+    type: 'POST',
+    data: JSON.stringify({ account: fromAccount, destinationAccount: toAccount, ammount: amount}),
+    contentType: 'application/json; charset=utf-8',
+    success: function(result){
+        alert("Transfer submitted successfully!");
+    }
+  });
+}
+
+function checkBalance() {
+  let account = $("#account").val();
+
+  $.ajax({
+    url: "http://localhost:5282/api/Payment?account=" + account,
+    type: 'GET',
+    success: function(accountDetails){
+        $("#balanceText").text("Your balance is: " + accountDetails.balance);
+    }
+  });
+}
+
+</script>
+
+</body>
+</html> -->
